@@ -10,7 +10,7 @@ ekf_filter_node:
 # The period, in seconds, after which we consider a sensor to have timed out. In this event, we carry out a predict
 # cycle on the EKF without correcting it. This parameter can be thought of as the minimum frequency with which the
 # filter will generate new output. Defaults to 1 / frequency if not specified.
-        #sensor_timeout: 0.1
+        sensor_timeout: 0.3
 
 # ekf_localization_node and ukf_localization_node both use a 3D omnidirectional motion model. If this parameter is
 # set to true, no 3D information will be used in your state estimate. Use this if you are operating in a planar
@@ -88,20 +88,32 @@ ekf_filter_node:
 
 
 # Further input parameter examples
+        # odom0: odometry/gps
+        # odom0_config: [true,  true,  false,
+        #                 false, false, false,
+        #                 false, false, false,
+        #                 false, false, false,
+        #                 false, false, false]
+        # odom0_queue_size: 10
+        # odom0_nodelay: true
+        # odom0_differential: false
+        # odom0_relative: false
 
-        twist0: /fsds/gss
-        twist0_config: [false, false, false,
+        odom0: /wheel_odom
+        odom0_config: [true, true, false,
                         false, false, false,
-                        true,  false, false,
+                        true, false, false,
                         false, false, false,
                         false, false, false]
-        twist0_queue_size: 10
-        # twist0_rejection_threshold: 2.0
-        # twist0_nodelay: false
+        odom0_queue_size: 10
+        # odom0_nodelay: true
+        # odom0_differential: true
+        # odom0_relative: false
+
 
         imu0: /fsds/imu
         imu0_config: [false, false, false,
-                      false, false, false,
+                      false, false, true,
                       false, false, false,
                       false, false,  true,
                       false, false, false]
@@ -113,6 +125,24 @@ ekf_filter_node:
         # imu0_twist_rejection_threshold: 0.8                #
         # imu0_linear_acceleration_rejection_threshold: 0.8  #
 
+
 # [ADVANCED] Some IMUs automatically remove acceleration due to gravity, and others don't. If yours doesn't, please set
 # this to true, and *make sure* your data conforms to REP-103, specifically, that the data is in ENU frame.
         imu0_remove_gravitational_acceleration: false
+
+# [x, y, z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az]
+        process_noise_covariance: [0.05, 0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.05,  0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.06,  0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.03,  0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.03,  0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.0,    0.06,  0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.025,  0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.025,  0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.04,  0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.01,  0.0,    0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.01,  0.0,    0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.02,  0.0,    0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.01,  0.0,    0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.01,  0.0,
+                                   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.015]
