@@ -10,23 +10,23 @@ ekf_filter_node_odom:
     print_diagnostics: true
     debug: false
 
-    map_frame: map
-    odom_frame: odom
-    base_link_frame: vectornav
-    world_frame: odom
+    map_frame: fsds/map
+    odom_frame: fsds/odom
+    base_link_frame: fsds/FSCar
+    world_frame: fsds/odom
 
-    # odom0: /wheel_odom
-    # odom0_config: [false, false, false,
-    #               false, false, false,
-    #               true,  false,  false,
-    #               false, false, false,
-    #               false, false, false]
-    # odom0_queue_size: 10
+    odom0: /wheel_odom
+    odom0_config: [false, false, false,
+                  false, false, false,
+                  true,  false,  false,
+                  false, false, false,
+                  false, false, false]
+    odom0_queue_size: 10
     # odom0_nodelay: true
     # odom0_differential: false
     # odom0_relative: false
 
-    imu0: imu                            #has to be imu, for navsat work properly
+    imu0: imu
     imu0_config: [false, false, false,
                   false,  false, true,
                   false, false, false,
@@ -81,10 +81,10 @@ ekf_filter_node_map:
     print_diagnostics: true
     debug: false
 
-    map_frame: map
-    odom_frame: odom
-    base_link_frame: vectornav
-    world_frame: map
+    map_frame: fsds/map
+    odom_frame: fsds/odom
+    base_link_frame: fsds/FSCar
+    world_frame: fsds/map
 
     odom0: /odometry/local
     odom0_config: [true, true, false,
